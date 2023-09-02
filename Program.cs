@@ -1,18 +1,26 @@
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Models;
+using WebApplication.Data.Models;
+using WebApplication.Service;
+using WebApplication.Service.IServices;
+//using WebApplication1.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 
-
+// Get connection string From Appsetting.json file>> 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+// Connection >> SQL + EF
 builder.Services.AddDbContext<TestAvinashContext>(options =>
     options.UseSqlServer(connectionString));
 
+//  DependencyInjection
+builder.Services.AddTransient<IUsers, Users>();
 
 
 var app = builder.Build();
